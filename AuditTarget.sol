@@ -12,7 +12,7 @@ contract PiggyBank_0262 {
     mapping(address => uint256) public deposits;
     bool private entered;
     mapping(address => uint256) public parked;
-    address payable internal beneficiary;
+    address payable internal immutable beneficiary;
     IERC20Like public rewardToken;
     mapping(address => uint256) public points;
 
@@ -32,6 +32,7 @@ contract PiggyBank_0262 {
 
     constructor() {
         owner = msg.sender;
+        beneficiary = payable(msg.sender);
     }
 
     function save() external payable {
@@ -55,9 +56,9 @@ contract PiggyBank_0262 {
 
     function exitSafe() external exclusive {
         uint256 a = parked[msg.sender];
+        parked[msg.sender] = 0;
         (bool ok, ) = msg.sender.call{value: a}("");
         require(ok, "send failed");
-        parked[msg.sender] = 0;
     }
 
     function pullFunds() external {
@@ -84,6 +85,8 @@ contract PiggyBank_0262 {
     }
 
     function weekdayIndex() external view returns (uint256) {
+        // UTC weekday for display only. No draw, payment or access check uses it.
+        // slither-disable-next-line weak-prng
         return (block.timestamp / 1 days + 4) % 7;
     }
 }
