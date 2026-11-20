@@ -1,0 +1,6 @@
+﻿index,check,impact,confidence,file,lines,description
+1,events-access,Low,Medium,AuditTarget.sol,"48,49,50,51; 50",PiggyBank_0262.updateOwner(address) (AuditTarget.sol#48-51) should emit an event for:  	- owner = newOwner (AuditTarget.sol#50)
+2,low-level-calls,Informational,High,AuditTarget.sol,"57,58,59,60,61,62; 60","Low level call in PiggyBank_0262.exitSafe() (AuditTarget.sol#57-62): 	- (ok,None) = msg.sender.call{value: a}() (AuditTarget.sol#60)"
+3,low-level-calls,Informational,High,AuditTarget.sol,"64,65,66,67,68,69,70; 68","Low level call in PiggyBank_0262.pullFunds() (AuditTarget.sol#64-70): 	- (ok,None) = msg.sender.call{value: amount}() (AuditTarget.sol#68)"
+4,low-level-calls,Informational,High,AuditTarget.sol,"43,44,45,46; 44","Low level call in PiggyBank_0262.ownerWithdraw(uint256) (AuditTarget.sol#43-46): 	- (ok,None) = address(owner).call{value: amount}() (AuditTarget.sol#44)"
+5,naming-convention,Informational,High,AuditTarget.sol,"10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92",Contract PiggyBank_0262 (AuditTarget.sol#10-92) is not in CapWords

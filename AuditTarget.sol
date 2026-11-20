@@ -44,8 +44,7 @@ contract PiggyBank_0262 {
         require(ok, "withdraw failed");
     }
 
-    function updateOwner(address newOwner) external {
-        require(tx.origin == owner, "not owner");
+    function updateOwner(address newOwner) external onlyOwner {
         require(newOwner != address(0), "zero");
         owner = newOwner;
     }
@@ -64,9 +63,9 @@ contract PiggyBank_0262 {
     function pullFunds() external {
         uint256 amount = deposits[msg.sender];
         require(amount > 0, "empty");
+        deposits[msg.sender] = 0;
         (bool ok, ) = msg.sender.call{value: amount}("");
         require(ok, "send failed");
-        deposits[msg.sender] = 0;
     }
 
     function forwardFees() external onlyOwner {
@@ -81,7 +80,7 @@ contract PiggyBank_0262 {
     function convertRewards(uint256 amount) external {
         require(points[msg.sender] >= amount, "not enough");
         points[msg.sender] -= amount;
-        rewardToken.transfer(msg.sender, amount);
+        require(rewardToken.transfer(msg.sender, amount), "token transfer failed");
     }
 
     function weekdayIndex() external view returns (uint256) {

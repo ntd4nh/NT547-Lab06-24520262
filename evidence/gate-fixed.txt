@@ -1,0 +1,5 @@
+Multiple frameworks detected: solc, Solc-json. Using solc (highest priority). Use --compile-force-framework to override.
+'solc --version' running
+'solc AuditTarget.sol --combined-json abi,ast,bin,bin-runtime,srcmap,srcmap-runtime,userdoc,devdoc,hashes --allow-paths .,/lab' running
+INFO:Slither:AuditTarget.sol analyzed (2 contracts with 64 detectors), 0 result(s) found
+Slither exit=0
