@@ -1,0 +1,47 @@
+Multiple frameworks detected: solc, Solc-json. Using solc (highest priority). Use --compile-force-framework to override.
+'solc --version' running
+'solc AuditTarget.sol --combined-json abi,ast,bin,bin-runtime,srcmap,srcmap-runtime,userdoc,devdoc,hashes --allow-paths .,/lab' running
+INFO:Detectors:
+Detector: weak-prng
+PiggyBank_0262.weekdayIndex() (AuditTarget.sol#87-89) uses a weak PRNG: "(block.timestamp / 86400 + 4) % 7 (AuditTarget.sol#88)" 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#weak-PRNG
+INFO:Detectors:
+Detector: reentrancy-eth
+Reentrancy in PiggyBank_0262.exitSafe() (AuditTarget.sol#57-62):
+	External calls:
+	- (ok,None) = msg.sender.call{value: a}() (AuditTarget.sol#59)
+	State variables written after the call(s):
+	- parked[msg.sender] = 0 (AuditTarget.sol#61)
+	PiggyBank_0262.parked (AuditTarget.sol#14) can be used in cross function reentrancies:
+	- PiggyBank_0262.depositSafe() (AuditTarget.sol#53-55)
+	- PiggyBank_0262.exitSafe() (AuditTarget.sol#57-62)
+	- PiggyBank_0262.parked (AuditTarget.sol#14)
+Reentrancy in PiggyBank_0262.pullFunds() (AuditTarget.sol#64-70):
+	External calls:
+	- (ok,None) = msg.sender.call{value: amount}() (AuditTarget.sol#67)
+	State variables written after the call(s):
+	- deposits[msg.sender] = 0 (AuditTarget.sol#69)
+	PiggyBank_0262.deposits (AuditTarget.sol#12) can be used in cross function reentrancies:
+	- PiggyBank_0262.deposits (AuditTarget.sol#12)
+	- PiggyBank_0262.pullFunds() (AuditTarget.sol#64-70)
+	- PiggyBank_0262.save() (AuditTarget.sol#37-40)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+INFO:Detectors:
+Detector: unchecked-transfer
+PiggyBank_0262.convertRewards(uint256) (AuditTarget.sol#81-85) ignores return value by rewardToken.transfer(msg.sender,amount) (AuditTarget.sol#84)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+INFO:Detectors:
+Detector: uninitialized-state
+PiggyBank_0262.beneficiary (AuditTarget.sol#15) is never initialized. It is used in:
+	- PiggyBank_0262.forwardFees() (AuditTarget.sol#72-74)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#uninitialized-state-variables
+INFO:Detectors:
+Detector: tx-origin
+PiggyBank_0262.updateOwner(address) (AuditTarget.sol#47-51) uses tx.origin for authorization: require(bool,string)(tx.origin == owner,not owner) (AuditTarget.sol#48)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dangerous-usage-of-txorigin
+INFO:Detectors:
+Detector: constable-states
+PiggyBank_0262.beneficiary (AuditTarget.sol#15) should be constant 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#state-variables-that-could-be-declared-constant
+INFO:Slither:AuditTarget.sol analyzed (2 contracts with 64 detectors), 7 result(s) found
+Slither exit=255
